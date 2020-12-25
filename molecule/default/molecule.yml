@@ -2,9 +2,23 @@
 dependency:
   name: galaxy
 driver:
-  name: delegated
+  name: vagrant
+lint: |
+  yamllint .
+  ansible-lint
 platforms:
-  - name: instance
+  - name: centos8-vagrant
+    box: centos/8
+    memory: 1024
+    cpu: 1
+  - name: centos7-vagrant
+    box: centos/7
+    memory: 1024
+    cpu: 1
+  - name: ubuntu1804-vagrant
+    box: generic/ubuntu1804
+    memory: 1024
+    cpu: 1
 provisioner:
   name: ansible
 verifier:

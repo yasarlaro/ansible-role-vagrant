@@ -1,0 +1,27 @@
+---
+- name: Setting OS version fact
+  set_fact:
+    osversion: "{{ ansible_distribution | lower }}{{ ansible_distribution_major_version }}"
+
+- name: Check OS version
+  fail:
+    msg: "OS Version( {{ ansible_distribution }}{{ ansible_distribution_major_version }} ) is not certified for the role"
+  when:
+    - osversion != "ubuntu18"
+    - osversion != "centos7"
+    - osversion != "centos8"
+
+- name: Check default vagrant provider variable
+  fail:
+    msg: "Default vagrant provider can be either libvirt or virtualbox"
+  when:
+    - default_provider != "libvirt"
+    - default_provider != "virtualbox"
+
+- name: Check default provider for Centos 8
+  fail:
+    msg:
+      - "Centos 8 has some issues with vagrant pluging that cannot be automated"
+      - "Please refer to the original documentation for manual steps"
+      - "https://github.com/vagrant-libvirt/vagrant-libvirt"
+  when: (default_provider == "libvirt") and (osversion == "centos8")

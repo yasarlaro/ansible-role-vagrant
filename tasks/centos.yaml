@@ -1,0 +1,35 @@
+---
+- name: "Install vagrant binary on Centos 7"
+  yum:
+    name: "{{ vagrant_base_url }}/vagrant_{{ vagrant_version }}_x86_64.rpm"
+    state: present
+  when: ansible_distribution_major_version == "7"
+
+# Fails if GPG check is enabled. Will find a better way.
+- name: "Install vagrant binary on Centos 8"
+  dnf:
+    name: "{{ vagrant_base_url }}/vagrant_{{ vagrant_version }}_x86_64.rpm"
+    state: present
+    disable_gpg_check: true
+  when: ansible_distribution_major_version == "8"
+
+- name: "Install libvirt vagrant plugin"
+  block:
+    - name: Install vagrant Plugin prereqs
+      yum:
+        name:
+          - libvirt
+          - libvirt-devel
+          - ruby-devel
+          - qemu-kvm
+          - libxslt-devel
+          - libxml2-devel
+          - libvirt-devel
+          - libguestfs-tools-c
+          - ruby-devel
+          - gcc
+
+    - name: Install vagrant libvirt plugin
+      command: "vagrant plugin install vagrant-libvirt"
+      become: false
+  when: default_provider == "libvirt"

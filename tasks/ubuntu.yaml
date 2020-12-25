@@ -1,0 +1,39 @@
+---
+- name: "Install Vagrant"
+  apt:
+    deb: "{{ vagrant_base_url }}/vagrant_{{ vagrant_version }}_x86_64.deb"
+
+- name: Install libvirt vagrant dependencies
+  block:
+    # I couldn't find a better way to enable source repositories
+    - name: Enable source libraries
+      replace:
+        path: /etc/apt/sources.list
+        regexp: '^#( deb-src http.*)'
+        replace: '\1'
+
+    - name: Install build dependencies
+      apt:
+        name:
+          - vagrant
+          - ruby-libvirt
+        state: build-dep
+        update_cache: true
+
+    - name: Install prereq packages
+      apt:
+        name:
+          - qemu
+          - libvirt-bin
+          - ebtables
+          - dnsmasq-base
+          - libxslt-dev
+          - libxml2-dev
+          - libvirt-dev
+          - zlib1g-dev
+          - ruby-dev
+
+    - name: Install vagrant libvirt plugin
+      command: "vagrant plugin install vagrant-libvirt"
+      become: false
+  when: default_provider == "libvirt"

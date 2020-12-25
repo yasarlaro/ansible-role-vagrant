@@ -1,2 +1,12 @@
 ---
 # tasks file for ansible-role-vagrant
+- name: Prereq check
+  include_tasks: prereq.yaml
+
+- name: Install and Configure for CentOS
+  include_tasks: centos.yaml
+  when: ansible_distribution == "CentOS"
+
+- name: Install and Configure for Ubuntu
+  include_tasks: ubuntu.yaml
+  when: ansible_distribution == "Ubuntu"
