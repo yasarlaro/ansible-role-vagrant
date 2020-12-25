@@ -1,4 +1,4 @@
-Role Name
+yasarlaro.vagrant
 =========
 
 This role installs vagrant on `Centos 7`,  `Centos 8`, or `Ubuntu 18` servers. The expected vagrant provider is either `VirtualBox` or `libvirt`.
