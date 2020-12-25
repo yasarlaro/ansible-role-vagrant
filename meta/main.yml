@@ -3,7 +3,7 @@ galaxy_info:
   author: Onur Yasarlar
   description: Installs Vagrant on Centos 7 / Centos 8 / Ubuntu 18
   company: Onur Lab
-  role_name: virtualbox
+  role_name: vagrant
 
   license: license MIT
 
